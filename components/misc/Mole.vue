@@ -28,12 +28,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data: () => ({
     intervalHandler: () => {},
     isShown: false,
     didClick: false,
   }),
+  computed: {
+    ...mapState({
+      isStarted: (state) => state.game.isStarted,
+    }),
+  },
   watch: {
     didClick(value) {
       if (value) {
@@ -46,12 +52,19 @@ export default {
         }, 425)
       }
     },
+    isStarted: {
+      immediate: true,
+      handler(value) {
+        if (value) this.startMole()
+        else {
+          this.isShown = false
+          this.stopMole()
+        }
+      },
+    },
   },
   beforeDestroy() {
     clearInterval(this.intervalHandler)
-  },
-  mounted() {
-    this.startMole()
   },
   methods: {
     startMole() {
