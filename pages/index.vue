@@ -17,7 +17,17 @@
           type="number"
         />
         <button
-          class="text-white duration-150 rounded-md px-5 py-1 mt-3 mb-5 block"
+          class="
+            text-white
+            duration-150
+            rounded-md
+            px-5
+            py-1
+            mt-3
+            mb-5
+            block
+            min-w-28
+          "
           :class="
             $store.state.game.isStarted
               ? 'bg-red-400 hover:bg-red-500'

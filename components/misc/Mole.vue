@@ -21,7 +21,7 @@
         "
         src="/molehappy.png"
         alt=""
-        @click="resetMole(), $store.dispatch('game/incrementScore')"
+        @click="clickMole()"
       />
     </div>
   </div>
@@ -45,9 +45,7 @@ export default {
       if (value) {
         const vm = this
         setTimeout(() => {
-          vm.didClick = false
-          vm.isShown = false
-          vm.stopMole()
+          vm.resetkMole()
           vm.startMole()
         }, 425)
       }
@@ -76,8 +74,14 @@ export default {
     stopMole() {
       clearInterval(this.intervalHandler)
     },
-    resetMole() {
+    clickMole() {
       this.didClick = true
+      this.$store.dispatch('game/incrementScore')
+    },
+    resetkMole() {
+      this.didClick = false
+      this.isShown = false
+      this.stopMole()
     },
   },
 }
