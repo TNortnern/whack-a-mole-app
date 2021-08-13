@@ -1,6 +1,7 @@
 <template>
   <div class="w-4/5 my-20 md:my-24 md:mx-8 md:w-1/3 lg:w-1/5">
     <div class="w-full h-3 bg-black relative group block">
+      <img class="absolue w-full h-40 inset-0 z-40" src="/hammer.png" alt="" />
       <img
         :class="isShown ? 'max-h-40' : 'max-h-0'"
         class="
@@ -15,7 +16,7 @@
         "
         src="/molehappy.png"
         alt=""
-        @click="$store.dispatch('game/incrementScore')"
+        @click="resetMole(), $store.dispatch('game/incrementScore')"
       />
     </div>
   </div>
@@ -24,13 +25,28 @@
 <script>
 export default {
   data: () => ({
+    intervalHandler: () => {},
     isShown: false,
+    didClick: false,
   }),
   mounted() {
-    const vm = this
-    setInterval(() => {
-      vm.isShown = !vm.isShown
-    }, 1000)
+    this.startMole()
+  },
+  methods: {
+    startMole() {
+      const vm = this
+      this.intervalHandler = setInterval(() => {
+        vm.isShown = !vm.isShown
+      }, 1000)
+    },
+    stopMole() {
+      clearInterval(this.intervalHandler)
+    },
+    resetMole() {
+      this.isShown = false
+      this.stopMole()
+      this.startMole()
+    },
   },
 }
 </script>

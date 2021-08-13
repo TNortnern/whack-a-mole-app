@@ -1,7 +1,8 @@
 <template>
   <div class="max-w-7xl mx-auto pt-40">
-    <div class="flex justify-center mb-20">
+    <div class="flex justify-center mb-24 border border-black py-4">
       <div>
+        <p class="text-5xl font-bold mb-8">Game Controls</p>
         <input
           v-model="timer"
           class="
@@ -31,8 +32,9 @@
         >
           Start game
         </button>
-        <p class="text-blue-400 text-3xl">
-          {{ $store.state.game.score }}
+        <p class="text-3xl">
+          Score:
+          <span class="text-blue-400">{{ $store.state.game.score }}</span>
         </p>
       </div>
     </div>
