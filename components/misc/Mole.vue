@@ -15,6 +15,7 @@
         "
         src="/molehappy.png"
         alt=""
+        @click="$store.dispatch('game/incrementScore')"
       />
     </div>
   </div>
