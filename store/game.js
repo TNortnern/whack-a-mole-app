@@ -1,25 +1,37 @@
+const defaultTimer = 100
 export default {
   state: () => ({
     score: 0,
-    timer: 2000,
+    timer: defaultTimer,
     isStarted: false,
-    startedTimer: 2000,
+    startedTimer: defaultTimer,
   }),
   actions: {
     resetGame({ state, commit }) {
       commit('SET_SCORE', 0)
       commit('SET_TIMER', state.startedTimer)
+      commit('SET_GAME', false)
     },
     incrementScore({ commit, state }) {
       const incrementedScore = state.score + 1
       commit('SET_SCORE', incrementedScore)
     },
     toggleGame({ state, commit, dispatch }) {
-      const gameStarted = state.isStarted
-      if (gameStarted) {
+      commit('SET_GAME', !state.isStarted)
+      if (!state.isStarted) {
         dispatch('resetGame')
+      } else {
+        const countdown = setInterval(() => {
+          if (state.isStarted) {
+            if (state.timer > 0) {
+              commit('SET_TIMER', state.timer - 1)
+            } else {
+              clearInterval(countdown)
+              dispatch('resetGame')
+            }
+          }
+        }, 100)
       }
-      commit('SET_GAME', !gameStarted)
     },
   },
   mutations: {

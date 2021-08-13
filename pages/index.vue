@@ -4,6 +4,7 @@
       <div>
         <p class="text-5xl font-bold mb-8">Game Controls</p>
         <input
+          v-if="!$store.state.game.isStarted"
           v-model="timer"
           class="
             px-4
@@ -13,9 +14,12 @@
             duration-100
             border-2 border-black
           "
-          placeholder="Game Time"
+          placeholder="Game Time(ms)"
           type="number"
         />
+        <p v-else>
+          {{ timer }}
+        </p>
         <button
           class="
             text-white
@@ -33,7 +37,7 @@
               ? 'bg-red-400 hover:bg-red-500'
               : 'bg-green-400 hover:bg-green-500'
           "
-          @click="$store.dispatch('game/toggleGame')"
+          @click="startGame()"
         >
           {{ $store.state.game.isStarted ? 'Stop' : 'Start game' }}
         </button>
@@ -64,7 +68,8 @@ export default {
         return this.$store.state.game.timer
       },
       set(time) {
-        this.$store.commit('game/SET_TIME', time)
+        console.log(`time`, time)
+        this.$store.commit('game/SET_TIMER', time)
       },
     },
   },
@@ -73,6 +78,9 @@ export default {
       const minutes = Math.floor(millis / 60000)
       const seconds = ((millis % 60000) / 1000).toFixed(0)
       return minutes + ':' + (seconds < 10 ? '0' : '') + seconds
+    },
+    startGame() {
+      this.$store.dispatch('game/toggleGame')
     },
   },
 }
