@@ -1,5 +1,15 @@
 <template>
   <div class="w-4/5 my-20 md:my-24 md:mx-8 md:w-1/3 lg:w-1/5">
+    <template v-if="!$store.state.game.isStarted">
+      <generic-input
+        v-model="appearTime"
+        label="Mole appear time"
+        placeholder="Appear time"
+        name="appear-time"
+        type="number"
+        class="mb-8"
+      />
+    </template>
     <div class="w-full h-3 bg-black relative group block">
       <img
         class="absolute w-full h-40 inset-x-0 -top-42 duration-150"
@@ -29,11 +39,16 @@
 
 <script>
 import { mapState } from 'vuex'
+import GenericInput from '../GenericInput.vue'
 export default {
+  components: {
+    GenericInput,
+  },
   data: () => ({
     intervalHandler: () => {},
     isShown: false,
     didClick: false,
+    appearTime: 1000,
   }),
   computed: {
     ...mapState({
@@ -69,7 +84,7 @@ export default {
       const vm = this
       this.intervalHandler = setInterval(() => {
         vm.isShown = !vm.isShown
-      }, 1000)
+      }, this.appearTime)
     },
     stopMole() {
       clearInterval(this.intervalHandler)

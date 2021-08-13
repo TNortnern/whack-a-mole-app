@@ -3,17 +3,11 @@
     <div class="flex justify-center mb-24 border border-black py-4">
       <div>
         <p class="text-5xl font-bold mb-8">Game Controls</p>
-        <input
+        <generic-input
           v-if="!$store.state.game.isStarted"
           v-model="timer"
-          class="
-            px-4
-            py-2
-            rounded-md
-            hover:bg-gray-100
-            duration-100
-            border-2 border-black
-          "
+          class="inline-block"
+          label="Game Timer"
           placeholder="Game Time(ms)"
           type="number"
         />
@@ -59,16 +53,16 @@
 </template>
 
 <script>
+import GenericInput from '~/components/GenericInput.vue'
 import Mole from '~/components/misc/Mole.vue'
 export default {
-  components: { Mole },
+  components: { Mole, GenericInput },
   computed: {
     timer: {
       get() {
         return this.$store.state.game.timer
       },
       set(time) {
-        console.log(`time`, time)
         this.$store.commit('game/SET_TIMER', time)
       },
     },
