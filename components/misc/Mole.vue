@@ -4,7 +4,7 @@
       <img
         class="absolute w-full h-40 inset-x-0 -top-42 duration-150"
         :class="didClick ? 'opacity-100 z-10' : 'opacity-0 z-0'"
-        src="/hammer.png"
+        src="/hammer.gif"
         alt=""
       />
       <img
@@ -43,7 +43,7 @@ export default {
           vm.isShown = false
           vm.stopMole()
           vm.startMole()
-        }, 400)
+        }, 425)
       }
     },
   },

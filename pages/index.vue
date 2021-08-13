@@ -17,20 +17,15 @@
           type="number"
         />
         <button
-          class="
-            bg-green-400
-            text-white
-            duration-150
-            rounded-md
-            hover:bg-green-500
-            px-5
-            py-1
-            mt-3
-            mb-5
-            block
+          class="text-white duration-150 rounded-md px-5 py-1 mt-3 mb-5 block"
+          :class="
+            $store.state.game.isStarted
+              ? 'bg-red-400 hover:bg-red-500'
+              : 'bg-green-400 hover:bg-green-500'
           "
+          @click="$store.dispatch('game/toggleGame')"
         >
-          Start game
+          {{ $store.state.game.isStarted ? 'Stop' : 'Start game' }}
         </button>
         <p class="text-3xl">
           Score:
@@ -53,15 +48,22 @@
 import Mole from '~/components/misc/Mole.vue'
 export default {
   components: { Mole },
-  data: () => ({
-    isShown: false,
-    timer: 2000,
-  }),
-  mounted() {
-    const vm = this
-    setInterval(() => {
-      vm.isShown = !vm.isShown
-    }, 1000)
+  computed: {
+    timer: {
+      get() {
+        return this.$store.state.game.timer
+      },
+      set(time) {
+        this.$store.commit('game/SET_TIME', time)
+      },
+    },
+  },
+  methods: {
+    millisToMinutesAndSeconds(millis) {
+      const minutes = Math.floor(millis / 60000)
+      const seconds = ((millis % 60000) / 1000).toFixed(0)
+      return minutes + ':' + (seconds < 10 ? '0' : '') + seconds
+    },
   },
 }
 </script>
