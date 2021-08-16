@@ -80,10 +80,6 @@ export default {
       },
     },
     isShown() {
-      console.log(
-        `Math.floor(Math.random() * this.$store.state.game.timer) + 50`,
-        Math.floor(Math.random() * this.$store.state.game.timer) + 50
-      )
       this.appearTime =
         Math.floor(Math.random() * this.$store.state.game.timer) + 50
     },
