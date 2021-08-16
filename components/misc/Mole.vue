@@ -34,6 +34,39 @@
         @click="clickMole()"
       />
     </div>
+    <div class="mt-3">
+      <button
+        class="
+          text-green-400
+          hover:(text-green-300
+          transform
+          scale-110)
+          duration-150
+          mr-2
+        "
+        @click="intensity > 199 ? (intensity = intensity - 100) : () => {}"
+      >
+        Intensify
+      </button>
+      <button
+        class="
+          text-red-400
+          hover:(text-red-300
+          transform
+          scale-110)
+          duration-150
+          mr-2
+        "
+        @click="intensity < 2599 ? (intensity = intensity + 100) : () => {}"
+      >
+        Detensify
+      </button>
+      <span v-if="intensity < 200 || intensity > 2500" class="font-bold">
+        <template v-if="intensity < 200"> Max </template>
+        <template v-if="intensity > 2500"> Max </template>
+        Intensity</span
+      >
+    </div>
   </div>
 </template>
 
@@ -45,12 +78,14 @@ export default {
     GenericInput,
   },
   data() {
-    const defaultStartTime = Math.floor(Math.random() * 2000) + 50
+    const defaultIntensity = 2000
+    const defaultStartTime = Math.floor(Math.random() * defaultIntensity) + 50
     return {
       intervalHandler: () => {},
       isShown: false,
       didClick: false,
       appearTime: defaultStartTime,
+      intensity: defaultIntensity,
     }
   },
   computed: {
@@ -79,7 +114,7 @@ export default {
       },
     },
     isShown() {
-      this.appearTime = Math.floor(Math.random() * 2000) + 50
+      this.appearTime = Math.floor(Math.random() * this.intensity) + 50
     },
   },
   beforeDestroy() {
