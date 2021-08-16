@@ -44,12 +44,16 @@ export default {
   components: {
     GenericInput,
   },
-  data: () => ({
-    intervalHandler: () => {},
-    isShown: false,
-    didClick: false,
-    appearTime: 1000,
-  }),
+  data() {
+    const defaultStartTime =
+      Math.floor(Math.random() * this.$store.state.game.timer) + 50
+    return {
+      intervalHandler: () => {},
+      isShown: false,
+      didClick: false,
+      appearTime: defaultStartTime,
+    }
+  },
   computed: {
     ...mapState({
       isStarted: (state) => state.game.isStarted,
@@ -75,6 +79,14 @@ export default {
         }
       },
     },
+    isShown() {
+      console.log(
+        `Math.floor(Math.random() * this.$store.state.game.timer) + 50`,
+        Math.floor(Math.random() * this.$store.state.game.timer) + 50
+      )
+      this.appearTime =
+        Math.floor(Math.random() * this.$store.state.game.timer) + 50
+    },
   },
   beforeDestroy() {
     clearInterval(this.intervalHandler)
@@ -84,6 +96,8 @@ export default {
       const vm = this
       this.intervalHandler = setInterval(() => {
         vm.isShown = !vm.isShown
+        clearInterval(vm.intervalHandler)
+        vm.startMole()
       }, this.appearTime)
     },
     stopMole() {

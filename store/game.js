@@ -1,10 +1,13 @@
-const defaultTimer = 100
+const defaultTimer = 1000
 export default {
   state: () => ({
     score: 0,
     timer: defaultTimer,
     isStarted: false,
+    randomizeAppearTimeOnClick: false,
     startedTimer: defaultTimer,
+    amountOfMoles: 6,
+    hideControlsOnStart: false,
   }),
   actions: {
     resetGame({ state, commit }) {
@@ -48,6 +51,17 @@ export default {
       }
       state.isStarted = value
     },
-    SET(state, { key, value }) {},
+    SET_RANDOMIZE_APPEAR_TIME(state, value) {
+      state.randomizeAppearTimeOnClick = value
+    },
+    SET_MOLE_AMOUNT(state, value) {
+      // minimum value is 1
+      if (Number(value) > 0) {
+        state.amountOfMoles = value
+      }
+    },
+    SET_HIDE_CONTROLS_ON_START(state, value) {
+      state.hideControlsOnStart = value
+    },
   },
 }
