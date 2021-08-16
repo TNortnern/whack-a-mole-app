@@ -3,7 +3,9 @@
     <div v-if="!$store.state.game.isStarted" class="mb-8 relative z-10">
       <generic-input
         v-model="appearTime"
-        :label="`${consistentAppearTime ? 'Mole ' : 'Initial mole'}appear time`"
+        :label="`${
+          consistentAppearTime ? 'Mole ' : 'Initial mole '
+        }appear time`"
         placeholder="Appear time"
         name="appear-time"
         type="number"
