@@ -1,8 +1,17 @@
-const defaultTimer = 1000
+const defaultMinutes = 5
+const defaultSeconds = 30
+const minutesToMillis = (val) => val * 60000
+const secondsToMillis = (val) => val * 1000
+const defaultTimer =
+  minutesToMillis(defaultMinutes) + secondsToMillis(defaultSeconds)
 export default {
   state: () => ({
     score: 0,
     timer: defaultTimer,
+    time: {
+      minutes: defaultMinutes,
+      seconds: defaultSeconds,
+    },
     isStarted: false,
     randomizeAppearTimeOnClick: false,
     startedTimer: defaultTimer,
@@ -27,13 +36,15 @@ export default {
         const countdown = setInterval(() => {
           if (state.isStarted) {
             if (state.timer > 0) {
-              commit('SET_TIMER', state.timer - 1)
+              commit('SET_TIMER', state.timer - 1000)
             } else {
               clearInterval(countdown)
               dispatch('resetGame')
             }
+          } else {
+            clearInterval(countdown)
           }
-        }, 100)
+        }, 1000)
       }
     },
   },
@@ -64,6 +75,12 @@ export default {
     },
     SET_HIDE_CONTROLS_ON_START(state, value) {
       state.hideControlsOnStart = value
+    },
+    SET_TIME(state, { key, value }) {
+      state.time[key] = value
+      state.timer =
+        minutesToMillis(state.time.minutes) +
+        secondsToMillis(state.time.seconds)
     },
   },
 }

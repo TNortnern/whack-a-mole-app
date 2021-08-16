@@ -45,8 +45,7 @@ export default {
     GenericInput,
   },
   data() {
-    const defaultStartTime =
-      Math.floor(Math.random() * this.$store.state.game.timer) + 50
+    const defaultStartTime = Math.floor(Math.random() * 2000) + 50
     return {
       intervalHandler: () => {},
       isShown: false,
@@ -80,8 +79,7 @@ export default {
       },
     },
     isShown() {
-      this.appearTime =
-        Math.floor(Math.random() * this.$store.state.game.timer) + 50
+      this.appearTime = Math.floor(Math.random() * 2000) + 50
     },
   },
   beforeDestroy() {

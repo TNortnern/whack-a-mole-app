@@ -8,12 +8,31 @@
     >
       <div>
         <p class="text-5xl font-bold">Game Controls</p>
+        <p class="text-3xl my-2 font-bold">
+          Time: {{ millisToMinutesAndSeconds(timer) }}
+        </p>
         <div v-if="!gameStarted" class="inline-flex flex-col">
           <generic-input
-            v-model="timer"
-            label="Game Timer"
-            placeholder="Game Time(ms)"
+            v-model.number="minutes"
+            label="Minutes"
+            placeholder="Minutes"
             type="number"
+            :input="{
+              $attrs: {
+                min: '0',
+              },
+            }"
+          />
+          <generic-input
+            v-model.number="seconds"
+            label="Seconds"
+            placeholder="Seconds"
+            type="number"
+            :input="{
+              $attrs: {
+                min: minutes > 0 ? 0 : 1,
+              },
+            }"
           />
           <generic-input
             v-model="amountOfMoles"
@@ -37,7 +56,7 @@
             />
           </div>
         </div>
-        <p v-else class="text-3xl">Timer: {{ timer }}</p>
+
         <button
           class="
             text-white
@@ -79,13 +98,30 @@ export default {
     gameStarted() {
       return this.$store.state.game.isStarted
     },
-    timer: {
+    minutes: {
       get() {
-        return this.$store.state.game.timer
+        return this.$store.state.game.time.minutes
       },
-      set(time) {
-        this.$store.commit('game/SET_TIMER', time)
+      set(value) {
+        this.$store.commit('game/SET_TIME', {
+          key: 'minutes',
+          value,
+        })
       },
+    },
+    seconds: {
+      get() {
+        return this.$store.state.game.time.seconds
+      },
+      set(value) {
+        this.$store.commit('game/SET_TIME', {
+          key: 'seconds',
+          value,
+        })
+      },
+    },
+    timer() {
+      return this.$store.state.game.timer
     },
     amountOfMoles: {
       get() {
@@ -103,20 +139,25 @@ export default {
         this.$store.commit('game/SET_HIDE_CONTROLS_ON_START', value)
       },
     },
-    // randomize: {
-    //   get() {
-    //     return this.$store.state.game.randomizeAppearTimeOnClick
-    //   },
-    //   set(value) {
-    //     this.$store.commit('game/SET_RANDOMIZE_APPEAR_TIME', value)
-    //   },
-    // },
   },
   methods: {
     millisToMinutesAndSeconds(millis) {
-      const minutes = Math.floor(millis / 60000)
-      const seconds = ((millis % 60000) / 1000).toFixed(0)
-      return minutes + ':' + (seconds < 10 ? '0' : '') + seconds
+      let sec = Math.floor(millis / 1000)
+      const hrs = Math.floor(sec / 3600)
+      sec -= hrs * 3600
+      let min = Math.floor(sec / 60)
+      sec -= min * 60
+
+      sec = '' + sec
+      sec = ('00' + sec).substring(sec.length)
+
+      if (hrs > 0) {
+        min = '' + min
+        min = ('00' + min).substring(min.length)
+        return hrs + ':' + min + ':' + sec
+      } else {
+        return min + ':' + sec
+      }
     },
     startGame() {
       this.$store.dispatch('game/toggleGame')
