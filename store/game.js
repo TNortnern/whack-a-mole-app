@@ -56,7 +56,9 @@ export default {
     },
     SET_MOLE_AMOUNT(state, value) {
       // minimum value is 1
-      if (Number(value) > 0) {
+      if (Number(state.amountOfMoles) <= 1 && value < 1) {
+        state.amountOfMoles = '1'
+      } else {
         state.amountOfMoles = value
       }
     },

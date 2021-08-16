@@ -9,6 +9,7 @@
       :value="value"
       :placeholder="placeholder"
       :name="name"
+      v-bind="input && input.$attrs"
       class="
         px-4
         py-2
@@ -53,6 +54,10 @@ export default {
     placeholder: {
       type: String,
       default: '',
+    },
+    input: {
+      type: Object,
+      default: null,
     },
   },
 }

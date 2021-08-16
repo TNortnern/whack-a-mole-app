@@ -16,11 +16,15 @@
             type="number"
           />
           <generic-input
-            v-model.number="amountOfMoles"
+            v-model="amountOfMoles"
             label="Amount of moles"
             placeholder="Mole count"
             type="number"
-            min="1"
+            :input="{
+              $attrs: {
+                min: '1',
+              },
+            }"
           />
           <div class="flex items-center space-x-2 mt-3">
             <label for="hide-on-start"> Hide controls on start? </label>
@@ -60,7 +64,7 @@
     </div>
     <score v-if="gameStarted && hideControlsOnStart" class="mb-16" />
     <div class="flex justify-center flex-wrap">
-      <mole v-for="index in amountOfMoles" :key="index" />
+      <mole v-for="index in Number(amountOfMoles)" :key="index" />
     </div>
   </div>
 </template>
