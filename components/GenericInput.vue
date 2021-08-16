@@ -19,8 +19,6 @@
         border-2 border-black
         focus:(ring-4
         ring-blue-300)
-        relative
-        z-20
         w-full
       "
       @input="$emit('input', $event.target.value)"

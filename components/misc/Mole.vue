@@ -1,15 +1,24 @@
 <template>
   <div class="w-4/5 my-20 md:my-24 md:mx-8 md:w-1/3 lg:w-1/5">
-    <template v-if="!$store.state.game.isStarted">
+    <div v-if="!$store.state.game.isStarted" class="mb-8 relative z-10">
       <generic-input
         v-model="appearTime"
-        label="Mole appear time"
+        :label="`${consistentAppearTime ? 'Mole ' : 'Initial mole'}appear time`"
         placeholder="Appear time"
         name="appear-time"
         type="number"
-        class="mb-8"
       />
-    </template>
+      <div class="flex items-center space-x-2 mt-3">
+        <label for="consistent-time">Keep consistent appear time?</label>
+        <input
+          id="consistent-time"
+          v-model="consistentAppearTime"
+          type="checkbox"
+          name="consistent-time"
+          class="transform scale-140"
+        />
+      </div>
+    </div>
     <div class="w-full h-3 bg-black relative group block">
       <img
         class="absolute w-full h-40 inset-x-0 -top-42 duration-150"
@@ -34,7 +43,7 @@
         @click="clickMole()"
       />
     </div>
-    <div class="mt-3">
+    <div v-if="isStarted" class="mt-3">
       <button
         class="
           text-green-400
@@ -73,18 +82,20 @@
 <script>
 import { mapState } from 'vuex'
 import GenericInput from '../GenericInput.vue'
+const defaultIntensity = 2000
+const defaultStartTime = Math.floor(Math.random() * defaultIntensity) + 50
 export default {
   components: {
     GenericInput,
   },
   data() {
-    const defaultIntensity = 2000
-    const defaultStartTime = Math.floor(Math.random() * defaultIntensity) + 50
     return {
       intervalHandler: () => {},
       isShown: false,
       didClick: false,
       appearTime: defaultStartTime,
+      consistentAppearTime: false,
+      baseTime: defaultStartTime,
       intensity: defaultIntensity,
     }
   },
@@ -110,11 +121,21 @@ export default {
         else {
           this.isShown = false
           this.stopMole()
+          // reset time back to starter
+          this.appearTime = this.baseTime
         }
       },
     },
     isShown() {
-      this.appearTime = Math.floor(Math.random() * this.intensity) + 50
+      if (!this.consistentAppearTime) {
+        this.appearTime = Math.floor(Math.random() * this.intensity) + 50
+      }
+    },
+    appearTime(value) {
+      // only adjust base time when game isn't started
+      if (!this.isStarted) {
+        this.baseTime = this.appearTime
+      }
     },
   },
   beforeDestroy() {
@@ -127,7 +148,7 @@ export default {
         vm.isShown = !vm.isShown
         clearInterval(vm.intervalHandler)
         vm.startMole()
-      }, this.appearTime)
+      }, vm.appearTime)
     },
     stopMole() {
       clearInterval(this.intervalHandler)
